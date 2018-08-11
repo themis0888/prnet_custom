@@ -1,8 +1,8 @@
 """
 CUDA_VISIBLE_DEVICES=1 python demo.py \
--i /shared/data/anime-faces/smile/ \
+-i /shared/data/celeb_cartoon/sample/ \
 --isDlib True \
---isKpt True --isPose True --isShow True --isImage True 
+--isKpt True --isShow True --isImage True 
 
 CUDA_VISIBLE_DEVICES=0 python demo.py -i /shared/data/sample/ \
 -o /shared/data/sample/prnet_out/ --isDlib True \
@@ -25,23 +25,18 @@ from utils.rotate_vertices import frontalize
 from utils.render_app import get_visibility, get_uv_mask, get_depth_image
 from utils.write import write_obj_with_colors, write_obj_with_texture
 
-
-def find_files(paths, extensions, sort=True):
-    if type(paths) is str:
-        paths = [paths]
-    files = []
-    for path in paths:
-        for dirs in os.listdir(path):
-            if dirs.endswith(extensions):
-                files.append(os.path.join(path, dirs))
-            else:
-                if '.' not in dirs:
-                    for file in os.listdir(path+dirs):
-                        if file.endswith(extensions):
-                            files.append(os.path.join(path+dirs, file))
+def find_files(path, extensions, sort=True, path_label = False):
+    if path_label == True:
+        result = [(os.path.join(dp, f) + ' ' + os.path.join(dp, f).split('/')[-2])
+        for dp, dn, filenames in os.walk(path) 
+        for f in filenames if os.path.splitext(f)[1] in extensions]
+    else:
+        result = [os.path.join(dp, f) for dp, dn, filenames in os.walk(path) 
+        for f in filenames if os.path.splitext(f)[1] in extensions]
     if sort:
-        files.sort()
-    return files
+        result.sort()
+
+    return result
 
 
 def main(args):
@@ -55,7 +50,8 @@ def main(args):
 
     # ------------- load data
     image_folder = args.inputDir
-    save_folder = args.inputDir + 'pr_output/'
+    print(image_folder)
+    save_folder = args.outputDir
     print(save_folder)
 
     if not os.path.exists(save_folder):
@@ -66,7 +62,7 @@ def main(args):
 
     types = ('*.jpg', '*.png', '*,JPG')
 
-    image_path_list= find_files(image_folder, ('jpg', 'png', 'JPG'))
+    image_path_list= find_files(image_folder, ('.jpg', '.png', '.JPG'))
     total_num = len(image_path_list)
     print(image_path_list)
 
