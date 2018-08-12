@@ -4,7 +4,7 @@ CUDA_VISIBLE_DEVICES=1 python demo.py \
 --isDlib True \
 --isKpt True --isShow True --isImage True 
 
-CUDA_VISIBLE_DEVICES=0 python demo.py -i /shared/data/sample/ \
+CUDA_VISIBLE_DEVICES=0 python -i demo.py -i /shared/data/sample/ \
 -o /shared/data/sample/prnet_out/ --isDlib True \
 --isKpt True --isPose True --isShow True --isImage True 
 """
@@ -17,6 +17,7 @@ from skimage.transform import rescale, resize
 from time import time
 import argparse
 import ast
+import pdb
 
 from api import PRN
 
@@ -136,9 +137,11 @@ def main(args):
             sio.savemat(os.path.join(meta_save_folder, name + '_mesh.mat'), {'vertices': vertices, 'colors': colors, 'triangles': prn.triangles})
 
         if args.isKpt or args.isShow:
+
             # get landmarks
             kpt = prn.get_landmarks(pos)
-            np.savetxt(os.path.join(meta_save_folder, name + '_kpt.txt'), kpt)
+            # pdb.set_trace()
+            np.save(os.path.join(meta_save_folder, name + '_kpt.npy'), kpt)
 
         if args.isPose or args.isShow:
             # estimate pose
@@ -203,4 +206,9 @@ if __name__ == '__main__':
     # update in 2017/7/19
     parser.add_argument('--texture_size', default=256, type=int,
                         help='size of texture map, default is 256. need isTexture is True')
+
+    parser.add_argument('--onlyKpt', default=False, type=bool,
+                        help='draw keypoints on the white background')
+
+
     main(parser.parse_args())
