@@ -4,9 +4,9 @@ CUDA_VISIBLE_DEVICES=1 python demo.py \
 --isDlib True \
 --isKpt True --isShow True --isImage True 
 
-CUDA_VISIBLE_DEVICES=0 python -i demo.py -i /shared/data/sample/ \
--o /shared/data/sample/prnet_out/ --isDlib True \
---isKpt True --isPose True --isShow True --isImage True 
+CUDA_VISIBLE_DEVICES=0 python -i demo.py -i /shared/data/celeb_cartoon/anime/ \
+-o /shared/data/meta/anime/  \
+--isKpt True --isShow True --isImage True 
 """
 import numpy as np
 import os
@@ -161,8 +161,8 @@ def main(args):
             b, g, r = cv2.split(image)
             image = cv2.merge([r,g,b])
 
-            cv2.imwrite(os.path.join(save_folder, name + '_3dbox.jpg'), plot_pose_box(image, camera_matrix, kpt))
-            cv2.imwrite(os.path.join(save_folder, name + '_skpt.jpg'), plot_kpt(image, kpt))
+            # cv2.imwrite(os.path.join(save_folder, name + '_3dbox.jpg'), plot_pose_box(image, camera_matrix, kpt))
+            # cv2.imwrite(os.path.join(save_folder, name + '_skpt.jpg'), plot_kpt(image, kpt))
             #cv2.imshow('sparse alignment', plot_kpt(image, kpt))
             #cv2.imshow('dense alignment', plot_vertices(image, vertices))
             #cv2.imshow('pose', plot_pose_box(image, camera_matrix, kpt))
