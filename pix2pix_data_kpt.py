@@ -17,9 +17,9 @@ import PIL.Image as im
 
 
 parser = argparse.ArgumentParser(description='Joint 3D Face Reconstruction and Dense Alignment with Position Map Regression Network')
-parser.add_argument('--data_path', type=str, dest='data_path', default='/shared/data/meta/anime/')
+parser.add_argument('--data_path', type=str, dest='data_path', default='/shared/data/meta/anime/face_detected/')
 parser.add_argument('--data_name', type=str, dest='data_name', default='danbooru')
-parser.add_argument('--save_path', type=str, dest='save_path', default='/shared/data/meta/anime/pix2pix/')
+parser.add_argument('--save_path', type=str, dest='save_path', default='/shared/data/meta/anime/pix2pix_input/')
 parser.add_argument('--meta_path', type=str, dest='meta_path', default='/shared/data/meta/anime/meta/')
 config, unparsed = parser.parse_known_args() 
 
@@ -62,8 +62,8 @@ def file_list(path, extensions, sort=True, path_label = False):
 # /shared/data/sample/597447_7_cut_018.jpg
 # /shared/data/meta/anime/03851_004.jpg
 
-# image_path_list = file_list(config.data_path, ('.jpg', '.png'))
-image_path_list = ['/shared/data/meta/anime/03851_004.jpg']
+image_path_list = file_list(config.data_path, ('.jpg', '.png'))
+# image_path_list = ['/shared/data/meta/anime/03851_004.jpg']
 
 for i, image_path in enumerate(image_path_list):
 
