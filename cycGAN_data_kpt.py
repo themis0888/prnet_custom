@@ -1,8 +1,8 @@
 """
 python cycGAN_data_kpt.py \
---data_path=/shared/data/meta/anime/face_detected/ \
---save_path=/shared/data/meta/anime/cycGAN_input/ \
---meta_path=/shared/data/meta/anime/meta/
+--data_path=/shared/data/meta/celeb/ \
+--save_path=/shared/data/meta/celeb/cycGAN_input/ \
+--meta_path=/shared/data/meta/celebmeta/
 """
 import numpy as np
 import os
@@ -71,9 +71,11 @@ def cycGAN_data(path, kpt):
 	h, w, c = img.shape
 	kpt_layer = np.zeros([h,w,1])
 	for i in range(68):
-		y, x = min(127, int(kpt[i,1])), min(127, int(kpt[i,0]))
-		if (x == 127) or (y == 127):
-			print(int(kpt[i,1]), int(kpt[i,0]))
+		y, x = min(h-1, int(kpt[i,1])), min(w-1, int(kpt[i,0]))
+		if (x == w-1) or (y == h-1):
+			print(int(kpt[i,1]), int(kpt[i,0]), h, w)
+		print(int(kpt[i,1]), int(kpt[i,0]), h, w)
+		
 		kpt_layer[y][x] = 1
 	concat_data = np.append(img, kpt_layer, axis=2)
 	return concat_data
@@ -112,13 +114,15 @@ for i, image_path in enumerate(image_path_list):
 for i, image_path in enumerate(image_path_list):
 
 	filename = os.path.basename(image_path)
+	if not os.path.exists(os.path.join(config.meta_path,filename[:-4]+'_kpt.npy')):
+		continue
 	kpt = np.load(os.path.join(config.meta_path,filename[:-4]+'_kpt.npy'))
 	concat_data = cycGAN_data(image_path, kpt)
 	if isinstance(concat_data, np.ndarray):
 		np.save(os.path.join(config.save_path,'np_'+filename[:-4]+'.npy'), concat_data)
 
 	if i % 500 == 0:
-		print('{0:03f}% done'.format(i/len(image_path_list)))
+		print('{0:02f}% done'.format(100*i/len(image_path_list)))
 	
 
 

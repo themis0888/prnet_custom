@@ -57,7 +57,7 @@ def main(args):
 
     if not os.path.exists(save_folder):
         os.mkdir(save_folder)
-    meta_save_folder = save_folder + 'meta/'
+    meta_save_folder = os.path.join(save_folder, 'meta')
     if not os.path.exists(meta_save_folder):
         os.mkdir(meta_save_folder)
 
@@ -181,7 +181,7 @@ if __name__ == '__main__':
                         help='set gpu id, -1 for CPU')
     parser.add_argument('--isDlib', default=True, type=ast.literal_eval,
                         help='whether to use dlib for detecting face, default is True, if False, the input image should be cropped in advance')
-    parser.add_argument('--is3d', default=True, type=ast.literal_eval,
+    parser.add_argument('--is3d', default=False, type=ast.literal_eval,
                         help='whether to output 3D face(.obj). default save colors.')
     parser.add_argument('--isMat', default=False, type=ast.literal_eval,
                         help='whether to save vertices,color,triangles as mat for matlab showing')
