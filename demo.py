@@ -4,8 +4,8 @@ CUDA_VISIBLE_DEVICES=1 python demo.py \
 --isDlib True \
 --isKpt True --isShow True --isImage True 
 
-CUDA_VISIBLE_DEVICES=4 python -i demo.py -i /shared/data/celeb_cartoon/anime/ \
--o /shared/data/sample/anime  \
+CUDA_VISIBLE_DEVICES=4 python -i demo.py -i /shared/data/celeb_cartoon/celeb/ \
+-o /shared/data/meta/celeb  \
 --isKpt True --isShow True --isImage True 
 """
 import numpy as np
@@ -142,7 +142,7 @@ def main(args):
             kpt = prn.get_landmarks(pos)
             # pdb.set_trace()
             np.save(os.path.join(meta_save_folder, name + '_kpt.npy'), kpt)
-            cv2.imwrite(os.path.join(save_folder, name + '_skpt.jpg'), plot_kpt(image, kpt))
+            # cv2.imwrite(os.path.join(save_folder, name + '_skpt.jpg'), plot_kpt(image, kpt))
 
         if args.isPose or args.isShow:
             # estimate pose
