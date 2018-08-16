@@ -76,8 +76,9 @@ def cycGAN_data(path, kpt):
 			print(int(kpt[i,1]), int(kpt[i,0]), h, w)
 		print(int(kpt[i,1]), int(kpt[i,0]), h, w)
 		
-		kpt_layer[y][x] = 1
+		kpt_layer[y][x] = 255
 	concat_data = np.append(img, kpt_layer, axis=2)
+	concat_data = np.uint8(concat_data)
 	return concat_data
 
 
